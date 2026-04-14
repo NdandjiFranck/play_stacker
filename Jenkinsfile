@@ -1,7 +1,7 @@
 pipeline {
      environment {
-       STAGING = "${APP_NAME}-staging-github"
-       PRODUCTION = "${APP_NAME}-prod-github"
+       STAGING = "${APP_NAME}-staging_github"
+       PRODUCTION = "${APP_NAME}-prod_github"
      }
      agent none
      stages {
