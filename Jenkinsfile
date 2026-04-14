@@ -72,17 +72,18 @@ pipeline {
           HEROKU_API_KEY = credentials('heroku_api_key')
       }  
       steps {
-          script {
-            sh '''
-              curl https://cli-assets.heroku.com/install.sh | sh
-              heroku container:login
-              heroku create $STAGING || echo "project already exist"
-              heroku container:push -a $STAGING web
-              heroku container:release -a $STAGING web
-            '''
-          }
-        }
-     }
+                withCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
+                    script {
+                        sh '''
+                            curl https://cli-assets.heroku.com/install.sh | sh
+                            heroku container:login
+                            heroku create ${STAGING} || echo "project already exist"
+                            docker push registry.heroku.com/${STAGING}/web
+                            heroku container:release web -a ${STAGING}
+                        '''
+                    }
+                }
+            }
 
      stage('Push image in production and deploy it') {
        when {
