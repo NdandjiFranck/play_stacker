@@ -74,16 +74,17 @@ pipeline {
             } 
       steps {
           script {
-            swithCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
+             withCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
             sh '''
                 heroku container:login
                 heroku container:push -a $STAGING web
                 heroku container:release -a $STAGING web
             '''
+            }
           }
         }
-      }
-    }
+     }
+
      stage('Push image in production and deploy it') {
        when {
               expression { GIT_BRANCH == 'origin/production' }
