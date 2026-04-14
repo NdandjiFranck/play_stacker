@@ -1,7 +1,7 @@
 pipeline {
      environment {
-       STAGING = "${APP_NAME}-staging_github"
-       PRODUCTION = "${APP_NAME}-prod_github"
+       STAGING = "${APP_NAME}-staging"
+       PRODUCTION = "${APP_NAME}-prod"
      }
      agent none
      stages {
@@ -72,22 +72,21 @@ pipeline {
           HEROKU_API_KEY = credentials('heroku_api_key')
       }  
       steps {
-                withCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
-                    script {
-                        sh '''
-                            curl https://cli-assets.heroku.com/install.sh | sh
-                            heroku container:login
-                            heroku create ${STAGING} || echo "project already exist"
-                            docker push registry.heroku.com/${STAGING}/web
-                            heroku container:release web -a ${STAGING}
-                        '''
-                    }
-                }
-            }
+          script {
+            sh '''
+              npm i -g heroku@7.68.0
+              heroku container:login
+              heroku create $STAGING || echo "project already exist"
+              heroku container:push -a $STAGING web
+              heroku container:release -a $STAGING web
+            '''
+          }
         }
+     }
+
      stage('Push image in production and deploy it') {
        when {
-              expression { GIT_BRANCH == 'origin/main' }
+              expression { GIT_BRANCH == 'origin/production' }
             }
       agent any
       environment {
@@ -96,7 +95,7 @@ pipeline {
       steps {
           script {
             sh '''
-              curl https://cli-assets.heroku.com/install.sh | sh
+              npm i -g heroku@7.68.0
               heroku container:login
               heroku create $PRODUCTION || echo "project already exist"
               heroku container:push -a $PRODUCTION web
