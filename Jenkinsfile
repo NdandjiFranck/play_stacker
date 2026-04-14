@@ -67,11 +67,7 @@ pipeline {
        when {
               expression { GIT_BRANCH == 'origin/main' }
             }
-        agent {
-                docker {
-                image 'heroku/heroku:22'
-                }
-            } 
+        agent any
       steps {
           script {
              withCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
