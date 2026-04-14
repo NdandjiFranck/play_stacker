@@ -1,7 +1,7 @@
 pipeline {
      environment {
-       STAGING = "${APP_NAME}-staging"
-       PRODUCTION = "${APP_NAME}-prod"
+       STAGING = "${APP_NAME}-staging-github"
+       PRODUCTION = "${APP_NAME}-prod-github"
      }
      agent none
      stages {
@@ -86,7 +86,7 @@ pipeline {
 
      stage('Push image in production and deploy it') {
        when {
-              expression { GIT_BRANCH == 'origin/production' }
+              expression { GIT_BRANCH == 'origin/main' }
             }
       agent any
       environment {
