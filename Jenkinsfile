@@ -67,18 +67,18 @@ pipeline {
        when {
               expression { GIT_BRANCH == 'origin/main' }
             }
-      agent any
-      environment {
-          HEROKU_API_KEY = credentials('heroku_api_key')
-      }  
+        agent {
+                docker {
+                image 'heroku/heroku:22'
+                }
+            } 
       steps {
           script {
+            swithCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
             sh '''
-              npm i -g heroku@7.68.0
-              heroku container:login
-              heroku create $STAGING || echo "project already exist"
-              heroku container:push -a $STAGING web
-              heroku container:release -a $STAGING web
+                heroku container:login
+                heroku container:push -a $STAGING web
+                heroku container:release -a $STAGING web
             '''
           }
         }
