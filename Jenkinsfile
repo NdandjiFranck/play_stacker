@@ -74,8 +74,7 @@ pipeline {
       steps {
           script {
             sh '''
-              npm i -g heroku@11.2.0
-              heroku container:login
+              npx heroku container:login
               heroku create $STAGING || echo "project already exist"
               heroku container:push -a $STAGING web
               heroku container:release -a $STAGING web
@@ -95,8 +94,7 @@ pipeline {
       steps {
           script {
             sh '''
-              npm i -g heroku@11.2.0
-              heroku container:login
+              npx heroku container:login
               heroku create $PRODUCTION || echo "project already exist"
               heroku container:push -a $PRODUCTION web
               heroku container:release -a $PRODUCTION web
