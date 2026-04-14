@@ -68,6 +68,9 @@ pipeline {
               expression { GIT_BRANCH == 'origin/main' }
             }
         agent any
+        environment {
+          HEROKU_API_KEY = credentials('heroku_api_key')
+      } 
       steps {
           script {
              withCredentials([string(credentialsId: 'heroku_api_key', variable: 'HEROKU_API_KEY')]) {
