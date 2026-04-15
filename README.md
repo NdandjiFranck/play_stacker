@@ -124,3 +124,5 @@ function(failedCount) {
 ## License
 
 MIT license.
+
+[![Build Status](https://ip10-0-31-4-d7fjtr657ed000844jb0-8080.direct.docker.labs.eazytraining.fr/buildStatus/icon?job=deploy)](https://ip10-0-31-4-d7fjtr657ed000844jb0-8080.direct.docker.labs.eazytraining.fr/job/deploy/)
