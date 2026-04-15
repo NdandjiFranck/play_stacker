@@ -63,7 +63,7 @@ pipeline {
           }
       }    
      
-     stage('Push image in staging and deploy it') {
+     stage('Push Image in staging and deploy it') {
        when {
               expression { GIT_BRANCH == 'origin/main' }
             }
