@@ -87,7 +87,7 @@ pipeline {
         }
      }
 
-     stage('Push Image in production and deploy it') {
+     stage('Push image in production and deploy it') {
        when {
               expression { GIT_BRANCH == 'origin/production' }
             }
